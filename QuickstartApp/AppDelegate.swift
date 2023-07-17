@@ -5,6 +5,18 @@
 //  Created by Nikhil Challagulla on 10/20/17.
 //
 
+// func generateSineWavePattern(amplitude: Int, frequency: Int, numberOfPoints: Int, minValue: Int, maxValue: Int) -> [Int] {
+//     var wavePattern = [Int]()
+    
+//     for i in 0..<numberOfPoints {
+//         let x = Double(i)
+//         let y = Int(Double(amplitude) * sin(2.0 * .pi * Double(frequency) * x / Double(numberOfPoints))) + minValue
+        
+//         wavePattern.append(y)
+//     }
+    
+//     return wavePattern
+// }
 import UIKit
 import CoreData
 
