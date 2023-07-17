@@ -4,6 +4,23 @@
 //
 //  Created by Nikhil Challagulla on 10/20/17.
 //
+
+  let parabolicSignwave = parabolicSignwavePattern(range: integerRange, length: patternLength)
+        print(parabolicSignwave)
+
+  func parabolicSignwavePattern(range: ClosedRange<Int>, length: Int) -> [Int] {
+        
+        var pattern = [Int]()
+        //    let pattern = (0..<length).map { index -> Int in
+        for index in 0..<length {
+            
+            let t = Double(index) / Double(length - 1)
+            let value = range.lowerBound + Int(Double((range.upperBound - range.lowerBound)) * pow((2 * t - 1), 2))
+            pattern.append(value)
+        }
+        //   }
+        return pattern
+    }
 ▿ 60 elements
   - 0 : 175
   - 1 : 166
