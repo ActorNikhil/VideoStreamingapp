@@ -5,6 +5,24 @@
 //  Created by Nikhil Challagulla on 10/20/17.
 //
 
+
+func createSineWaveArray(length: Int, amplitude: Int, frequency: Double) -> [Int] {
+    var result = [Int]()
+    for i in 0..<length {
+        let value = Int(Double(amplitude) * sin(2 * Double.pi * frequency * Double(i) / Double(length)))
+        result.append(value)
+    }
+    return result
+}
+
+// Usage example
+let length = 100
+let amplitude = 10
+let frequency = 0.1
+
+let sineWaveArray = createSineWaveArray(length: length, amplitude: amplitude, frequency: frequency)
+print(sineWaveArray)
+
   let parabolicSignwave = parabolicSignwavePattern(range: integerRange, length: patternLength)
         print(parabolicSignwave)
 
