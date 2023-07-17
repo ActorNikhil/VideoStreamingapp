@@ -5,6 +5,20 @@
 //  Created by Nikhil Challagulla on 10/20/17.
 //
 
+
+// func signwavePattern(array: [Int], repetitions: Int) -> [Int] {
+//     var pattern = [Int]()
+//     for _ in 0..<repetitions {
+//         pattern += array
+//     }
+//     return pattern
+// }
+
+// let integerArray = [175, 40, 175, 300]
+// let repetitions = 2 // Change this value to adjust the number of repetitions
+
+// let signwave = signwavePattern(array: integerArray, repetitions: repetitions)
+// print(signwave)
 // func generateSineWavePattern(amplitude: Int, frequency: Int, numberOfPoints: Int, minValue: Int, maxValue: Int) -> [Int] {
 //     var wavePattern = [Int]()
     
