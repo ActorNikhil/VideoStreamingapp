@@ -4,6 +4,28 @@
 //
 //  Created by Nikhil Challagulla on 10/20/17.
 //
+
+import Foundation
+
+func createCSVFile() {
+    let csvString = "Name,Age,Email\n" +
+                    "John,30,john@example.com\n" +
+                    "Jane,25,jane@example.com\n" +
+                    "Bob,28,bob@example.com"
+
+    let fileName = "sample.csv"
+
+    if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+
+        do {
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+            print("CSV file created successfully.")
+        } catch {
+            print("Error creating CSV file: \(error.localizedDescription)")
+        }
+    }
+}
 func hexStringToByteArray(_ hexString: String) -> [UInt8]? {
     let len = hexString.count
     guard len % 2 == 0 else { return nil }
