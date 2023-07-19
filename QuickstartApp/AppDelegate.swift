@@ -4,7 +4,28 @@
 //
 //  Created by Nikhil Challagulla on 10/20/17.
 //
-
+func hexStringToByteArray(_ hexString: String) -> [UInt8]? {
+    let len = hexString.count
+    guard len % 2 == 0 else { return nil }
+    
+    var byteArray = [UInt8]()
+    var index = hexString.startIndex
+    
+    for _ in 0..<len/2 {
+        let nextIndex = hexString.index(index, offsetBy: 2)
+        let byteString = hexString[index..<nextIndex]
+        
+        if let byte = UInt8(byteString, radix: 16) {
+            byteArray.append(byte)
+        } else {
+            return nil
+        }
+        
+        index = nextIndex
+    }
+    
+    return byteArray
+}
 
 func createSineWaveArray(length: Int, amplitude: Int, frequency: Double) -> [Int] {
     var result = [Int]()
