@@ -4,7 +4,55 @@
 //
 //  Created by Nikhil Challagulla on 10/20/17.
 //
+import Foundation
 
+struct Person {
+    let personId: Int
+    let name: String
+    let age: Int
+    let addressId: Int
+}
+
+struct Address {
+    let addressId: Int
+    let street: String
+    let city: String
+}
+
+func createCSVFile() {
+    let persons = [
+        Person(personId: 1, name: "John", age: 30, addressId: 1),
+        Person(personId: 2, name: "Jane", age: 25, addressId: 2),
+        Person(personId: 3, name: "Bob", age: 28, addressId: 3)
+    ]
+    
+    let addresses = [
+        Address(addressId: 1, street: "123 Main St", city: "New York"),
+        Address(addressId: 2, street: "456 Elm St", city: "Los Angeles"),
+        Address(addressId: 3, street: "789 Oak St", city: "Chicago")
+    ]
+    
+    var csvString = "PersonId,Name,Age,AddressId,Street,City\n"
+
+    for person in persons {
+        if let address = addresses.first(where: { $0.addressId == person.addressId }) {
+            csvString += "\(person.personId),\(person.name),\(person.age),\(person.addressId),\(address.street),\(address.city)\n"
+        }
+    }
+
+    let fileName = "linked_data.csv"
+
+    if let documentDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+        let fileURL = documentDirectory.appendingPathComponent(fileName)
+
+        do {
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+            print("CSV file with linked data created successfully.")
+        } catch {
+            print("Error creating CSV file: \(error.localizedDescription)")
+        }
+    }
+}
 import Foundation
 
 func createCSVFile() {
