@@ -7,6 +7,29 @@
 import Foundation
 import UserNotifications
 
+
+import UserNotifications
+
+extension UNUserNotificationCenter {
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String], completion: @escaping (Error?) -> Void) {
+        self.removeDeliveredNotifications(withIdentifiers: identifiers) { error in
+            DispatchQueue.main.async {
+                completion(error)
+            }
+        }
+    }
+}
+
+// Usage
+let notificationCenter = UNUserNotificationCenter.current()
+let notificationIdentifiers: [String] = ["notification1", "notification2"]
+notificationCenter.removeDeliveredNotifications(withIdentifiers: notificationIdentifiers) { error in
+    if let error = error {
+        print("Error removing delivered notifications with identifiers: \(error)")
+    } else {
+        print("Delivered notifications with identifiers removed successfully.")
+    }
+}
 extension UNUserNotificationCenter {
     func removeDeliveredNotifications(withIdentifiers identifiers: [String], completion: @escaping (Error?) -> Void) {
         self.removeDeliveredNotifications(withIdentifiers: identifiers) { error in
