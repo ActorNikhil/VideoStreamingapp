@@ -6,6 +6,29 @@
 //
 import Foundation
 
+import UserNotifications
+
+extension UNUserNotificationCenter {
+    func removeAllDeliveredNotifications(completion: @escaping (Error?) -> Void) {
+        self.removeAllDeliveredNotifications { error in
+            DispatchQueue.main.async {
+                completion(error)
+            }
+        }
+    }
+}
+
+// Usage
+let notificationCenter = UNUserNotificationCenter.current()
+notificationCenter.removeAllDeliveredNotifications { error in
+    if let error = error {
+        print("Error removing delivered notifications: \(error)")
+    } else {
+        print("All delivered notifications removed successfully.")
+    }
+}
+
+
 struct Person {
     let personId: Int
     let name: String
