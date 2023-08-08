@@ -7,7 +7,44 @@
 import Foundation
 import UserNotifications
 
+import UIKit
+import UserNotifications
 
+class ViewController: UIViewController, UNUserNotificationCenterDelegate {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Request notification permissions
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+            if granted {
+                UNUserNotificationCenter.current().delegate = self
+            }
+        }
+        
+        // Schedule a notification
+        let content = UNMutableNotificationContent()
+        content.title = "My Notification"
+        content.body = "This is a sample notification."
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10, repeats: false)
+        let request = UNNotificationRequest(identifier: "notificationIdentifier", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+    }
+    
+    // Delegate method called when a notification is triggered and the app is in the foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Handle the notification trigger here
+        print("Notification will trigger: \(notification)")
+        completionHandler([.alert, .sound, .badge])
+    }
+    
+    // Delegate method called when a user interacts with a notification
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // Handle the user's interaction with the notification here
+        print("User interacted with notification: \(response.notification)")
+        completionHandler()
+    }
+}
 import UserNotifications
 
 extension UNUserNotificationCenter {
