@@ -6,7 +6,58 @@
 //
 import Foundation
 import UserNotifications
+import UIKit
+import UserNotifications
 
+class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = NotificationManager()
+    
+    func registerForNotifications() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
+            if granted {
+                print("Notification permissions granted")
+            } else {
+                print("Notification permissions denied")
+            }
+        }
+    }
+    
+    func scheduleNotification(identifier: String, title: String, body: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = UNNotificationSound.default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Notification scheduled successfully")
+            }
+        }
+    }
+    
+    // Handle when multiple notifications with the same identifier are triggered simultaneously
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("Received notification response: \(response)")
+        
+        // Handle the response, e.g., show the notification or perform an action
+        // You might want to customize this behavior based on your app's requirements
+        
+        completionHandler()
+    }
+}
+
+// Example usage
+let notificationManager = NotificationManager.shared
+notificationManager.registerForNotifications()
+notificationManager.scheduleNotification(identifier: "sampleIdentifier", title: "Sample Title", body: "Sample Body")
 import UIKit
 import UserNotifications
 
