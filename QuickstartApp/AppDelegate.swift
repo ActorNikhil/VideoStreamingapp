@@ -1,6 +1,43 @@
 
 
+#!/usr/bin/swift
 
+import Foundation
+
+// Check for the correct number of command-line arguments
+guard CommandLine.arguments.count == 3 else {
+    print("Usage: ./renameFile.swift <folder_path> <old_text> <new_text>")
+    exit(1)
+}
+
+// Retrieve command-line arguments
+let folderPath = CommandLine.arguments[1]
+let oldText = CommandLine.arguments[2]
+let newText = CommandLine.arguments[3]
+
+// Get the contents of the folder
+let fileManager = FileManager.default
+do {
+    let folderContents = try fileManager.contentsOfDirectory(atPath: folderPath)
+    
+    for fileName in folderContents {
+        // Check if the file name needs to be changed (e.g., contains oldText)
+        if fileName.contains(oldText) {
+            // Define the new file name by replacing oldText with newText
+            let newFileName = fileName.replacingOccurrences(of: oldText, with: newText)
+            
+            // Create URLs for the old and new file names
+            let oldFileURL = URL(fileURLWithPath: folderPath).appendingPathComponent(fileName)
+            let newFileURL = URL(fileURLWithPath: folderPath).appendingPathComponent(newFileName)
+            
+            // Rename the file
+            try fileManager.moveItem(at: oldFileURL, to: newFileURL)
+            print("Renamed \(fileName) to \(newFileName)")
+        }
+    }
+} catch {
+    print("Error: \(error)")
+}
 #!/usr/bin/swift
 
 import Foundation
