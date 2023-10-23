@@ -1,7 +1,36 @@
 
 
 
+#!/usr/bin/swift
 
+import Foundation
+
+// Define the folder path where the files are located
+let folderPath = "/path/to/folder" // Replace with your folder path
+
+// Get the contents of the folder
+let fileManager = FileManager.default
+do {
+    let folderContents = try fileManager.contentsOfDirectory(atPath: folderPath)
+    
+    for fileName in folderContents {
+        // Check if the file name needs to be changed (e.g., contains "3.6")
+        if fileName.contains("3.6") {
+            // Define the new file name by replacing "3.6" with "3.7"
+            let newFileName = fileName.replacingOccurrences(of: "3.6", with: "3.7")
+            
+            // Create URLs for the old and new file names
+            let oldFileURL = URL(fileURLWithPath: folderPath).appendingPathComponent(fileName)
+            let newFileURL = URL(fileURLWithPath: folderPath).appendingPathComponent(newFileName)
+            
+            // Rename the file
+            try fileManager.moveItem(at: oldFileURL, to: newFileURL)
+            print("Renamed \(fileName) to \(newFileName)")
+        }
+    }
+} catch {
+    print("Error: \(error)")
+}
 
 
 //
