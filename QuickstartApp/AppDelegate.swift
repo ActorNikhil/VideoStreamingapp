@@ -1,5 +1,45 @@
 
+#!/usr/bin/swift
 
+import Foundation
+
+// Check for the correct number of command-line arguments
+guard CommandLine.arguments.count == 3 else {
+    print("Usage: ./modifyFiles.swift <folder_path> <old_text> <new_text>")
+    exit(1)
+}
+
+// Retrieve command-line arguments
+let folderPath = CommandLine.arguments[1]
+let oldText = CommandLine.arguments[2]
+let newText = CommandLine.arguments[3]
+
+// Get the contents of the folder
+let fileManager = FileManager.default
+do {
+    let folderContents = try fileManager.contentsOfDirectory(atPath: folderPath)
+    
+    for fileName in folderContents {
+        // Check if the file name needs to be changed (e.g., contains oldText)
+        if fileName.contains(oldText) {
+            let fileURL = URL(fileURLWithPath: folderPath).appendingPathComponent(fileName)
+            
+            // Read the content of the file
+            if var content = try? String(contentsOf: fileURL) {
+                // Replace oldText with newText in the content
+                content = content.replacingOccurrences(of: oldText, with: newText)
+                
+                // Write the modified content back to the file
+                try content.write(to: fileURL, atomically: false, encoding: .utf8)
+                print("Modified \(fileName)")
+            } else {
+                print("Error reading or modifying \(fileName)")
+            }
+        }
+    }
+} catch {
+    print("Error: \(error)")
+}
 #!/usr/bin/swift
 
 import Foundation
