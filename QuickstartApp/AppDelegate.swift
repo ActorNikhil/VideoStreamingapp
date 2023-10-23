@@ -1,3 +1,9 @@
+
+
+
+
+
+
 //
 //  AppDelegate.swift
 //  QuickstartApp
@@ -8,7 +14,29 @@ import Foundation
 import UserNotifications
 import UIKit
 import UserNotifications
+#!/usr/bin/swift
 
+import Foundation
+
+// Define the old and new file names
+let oldFileName = "example.txt"
+let newFileName = "new_name.txt"
+
+// Get the URL for the current directory
+let fileManager = FileManager.default
+let currentDirectoryURL = URL(fileURLWithPath: fileManager.currentDirectoryPath)
+
+// Create URLs for the old and new file names
+let oldFileURL = currentDirectoryURL.appendingPathComponent(oldFileName)
+let newFileURL = currentDirectoryURL.appendingPathComponent(newFileName)
+
+do {
+    // Rename the file
+    try fileManager.moveItem(at: oldFileURL, to: newFileURL)
+    print("File renamed to \(newFileName)")
+} catch {
+    print("Error renaming file: \(error)")
+}
 class NotificationManager: NSObject, UNUserNotificationCenterDelegate {
     static let shared = NotificationManager()
     
