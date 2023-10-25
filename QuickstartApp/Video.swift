@@ -4,7 +4,49 @@
 //
 //  Created by Nikhil Challagulla on 10/20/17.
 //
+import SwiftUI
+import SwiftUICharts
 
+struct ContentView: View {
+    @State private var selectedTime: Date?
+    
+    let data: [DataPoint] = [
+        DataPoint(time: Date().addingTimeInterval(-3600), value: 20),
+        DataPoint(time: Date().addingTimeInterval(-2700), value: 25),
+        DataPoint(time: Date().addingTimeInterval(-1800), value: 40),
+        DataPoint(time: Date().addingTimeInterval(-900), value: 15),
+        DataPoint(time: Date(), value: 35)
+    ]
+    
+    var body: some View {
+        VStack {
+            LineChart(data: data, title: "Hourly Data", legend: "Values", valueSpecifier: "%.0f", legendSpecifier: "%.0f")
+                .touchOverlay(chartData: data, specifier: "HH:mm")
+                .yAxisGrid(yInterval: 50.0)
+                .xAxisTime(tickCount: 5)
+                .onTouchGesture { touch in
+                    if let dataPoint = touch.chartPoint {
+                        selectedTime = dataPoint.x as? Date
+                    }
+                }
+            
+            if let selectedTime = selectedTime {
+                Text("Selected Time: \(selectedTime, style: .time)")
+            }
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
+struct DataPoint: ChartData {
+    var time: Date
+    var value: Double
+}
 import UIKit
 
 class Video : NSObject{
