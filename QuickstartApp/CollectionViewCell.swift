@@ -4,7 +4,43 @@
 //
 //  Created by Brian Coleman on 2014-09-04.
 //  Copyright (c) 2014 Brian Coleman. All rights import SwiftUI
+import SwiftUI
 
+struct Snowflake: View {
+    @State private var snowflakeOffset: CGPoint = CGPoint(x: 0, y: 0)
+
+    var body: some View {
+        Image(systemName: "snow")
+            .font(.title)
+            .offset(x: snowflakeOffset.x, y: snowflakeOffset.y)
+            .onAppear {
+                withAnimation(Animation.linear(duration: 5).repeatForever(autoreverses: false)) {
+                    self.snowflakeOffset = CGPoint(x: Double.random(in: 0...UIScreen.main.bounds.width), y: Double(UIScreen.main.bounds.height))
+                }
+            }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        ZStack {
+            Color.blue.edgesIgnoringSafeArea(.all)
+
+            ForEach(0..<10) { _ in
+                Snowflake()
+            }
+        }
+    }
+}
+
+@main
+struct SnowflakeApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
 struct Snowflake: View {
     @State private var snowflakeOffset: CGFloat = 0
     
