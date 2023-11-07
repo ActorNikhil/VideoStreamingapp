@@ -3,8 +3,43 @@
 //  UICollectionView
 //
 //  Created by Brian Coleman on 2014-09-04.
-//  Copyright (c) 2014 Brian Coleman. All rights reserved.
-//
+//  Copyright (c) 2014 Brian Coleman. All rights import SwiftUI
+
+struct Snowflake: View {
+    @State private var snowflakeOffset: CGFloat = 0
+    
+    var body: some View {
+        Image(systemName: "snow")
+            .font(.title)
+            .offset(y: snowflakeOffset)
+            .onAppear {
+                withAnimation(Animation.linear(duration: 5).repeatForever(autoreverses: false)) {
+                    self.snowflakeOffset = UIScreen.main.bounds.height
+                }
+            }
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        ZStack {
+            Color.blue.edgesIgnoringSafeArea(.all)
+            
+            ForEach(0..<10) { _ in
+                Snowflake()
+            }
+        }
+    }
+}
+
+@main
+struct SnowflakeApp: App {
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+        }
+    }
+}
 
 import UIKit
 
