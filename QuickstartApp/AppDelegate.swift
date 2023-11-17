@@ -3,6 +3,13 @@
 
 import Foundation
 
+Dear [Hiring Manager's Name],
+
+I am writing to express my interest in the iOS Developer position at [Company Name]. With a proven track record in Swift programming and a passion for creating seamless user experiences, I am eager to contribute my skills to your dynamic team. My resume is attached for your review.
+
+Sincerely,
+[Your Full Name]
+
 // Check for the correct number of command-line arguments
 guard CommandLine.arguments.count == 3 else {
     print("Usage: ./modifyFiles.swift <folder_path> <old_text> <new_text>")
