@@ -1,6 +1,30 @@
 
 #!/usr/bin/swift
 
+
+import CoreML
+import CreateML
+
+// Given data points
+let carbData = [50, 100, 200, 10]
+let glucoseData = [120, 150, 250, 90]
+
+// Create a data table
+let dataTable = try! MLDataTable(dictionary: ["Carbs": carbData, "Glucose": glucoseData])
+
+// Create and train a linear regression model
+let model = try! MLLinearRegression(trainingData: dataTable, targetColumn: "Glucose")
+
+// Save the trained model
+try! model.write(to: URL(fileURLWithPath: "GlucosePredictionModel.mlmodel"))
+
+// Example usage for prediction
+let predictionInput = try! MLFeatureProvider(dictionary: ["Carbs": 20])
+let predictionResult = try! model.prediction(from: predictionInput)
+let predictedGlucose = predictionResult.featureValue(for: "Glucose")!.doubleValue
+
+print("Predicted Glucose Level for 20 grams of carbs: \(predictedGlucose)")
+
 import Foundation
 
 Dear [Hiring Manager's Name],
