@@ -1,6 +1,25 @@
 
 #!/usr/bin/swift
+import UIKit
 
+class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(screenCaptured), name: UIScreen.capturedDidChangeNotification, object: nil)
+    }
+
+    @objc func screenCaptured() {
+        if UIScreen.main.isCaptured {
+            print("Screen is being shared")
+            // Add your notification or UI update logic here
+        } else {
+            print("Screen sharing stopped")
+            // Add your notification or UI update logic here
+        }
+    }
+}
 
 import CoreML
 import CreateML
