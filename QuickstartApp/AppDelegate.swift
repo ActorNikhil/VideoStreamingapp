@@ -1,3 +1,30 @@
+import CoreML
+
+// Function to load Core ML model
+func loadModel() -> NextNumberPredictionModel {
+    guard let modelURL = Bundle.main.url(forResource: "NextNumberPredictionModel", withExtension: "mlmodel"),
+          let model = try? NextNumberPredictionModel(contentsOf: modelURL) else {
+        fatalError("Failed to load Core ML model.")
+    }
+    return model
+}
+
+// Function to make predictions using the Core ML model
+func predictNextNumber(time: Double, model: NextNumberPredictionModel) -> Double {
+    do {
+        let prediction = try model.prediction(time: NSNumber(value: time))
+        return prediction.nextNumber.doubleValue
+    } catch {
+        fatalError("Error making prediction: \(error)")
+    }
+}
+
+// Example usage
+let model = loadModel()
+let nextTime = 5.0
+let predictedNumber = predictNextNumber(time: nextTime, model: model)
+
+print("Predicted number at \(nextTime)-minute interval: \(predictedNumber)")
 
 #!/usr/bin/swift
 import UIKit
