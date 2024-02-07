@@ -1,3 +1,61 @@
+
+import CoreML
+import Foundation
+
+// Define your data structure
+struct DataPoint {
+    let input: Double
+    let output: Double
+}
+
+// Create an array of data points
+let data: [DataPoint] = [
+    DataPoint(input: 1.0, output: 2.0),
+    DataPoint(input: 2.0, output: 3.0),
+    DataPoint(input: 3.0, output: 4.0),
+    // Add more data points as needed
+]
+
+// Prepare the training data
+var trainingData: [MLFeatureProvider] = []
+for point in data {
+    let feature = try! MLMultiArray(shape: [1], dataType: .double)
+    feature[0] = NSNumber(value: point.input)
+    
+    let label = try! MLMultiArray(shape: [1], dataType: .double)
+    label[0] = NSNumber(value: point.output)
+    
+    let dataPoint: [String: MLFeatureValue] = ["input": MLFeatureValue(multiArray: feature),
+                                               "output": MLFeatureValue(multiArray: label)]
+    
+    if let provider = try? MLDictionaryFeatureProvider(dictionary: dataPoint) {
+        trainingData.append(provider)
+    }
+}
+
+// Define and create the linear regression model
+let model = try! LinearRegressor(configuration: MLModelConfiguration())
+
+// Train the model
+let trainingParameters = MLUpdateTask.TrainingParameters(learningRate: 0.01, batchSize: 1, epochCount: 100)
+let updateTask = try! MLUpdateTask(model: model, trainingData: trainingData, trainingParameters: trainingParameters)
+
+let updateProgress = try! updateTask.execute()
+
+// Save the trained model
+let modelURL = URL(fileURLWithPath: "LinearRegressionModel.mlmodel")
+try! model.write(to: modelURL)
+
+// Use the trained model for prediction
+let trainedModel = try! LinearRegressor(contentsOf: modelURL)
+
+// Perform a prediction
+let inputArray = try! MLMultiArray(shape: [1], dataType: .double)
+inputArray[0] = NSNumber(value: 5.0)
+
+let prediction = try! trainedModel.prediction(input: LinearRegressorInput(input: inputArray))
+
+print("Prediction: \(prediction.output[0].doubleValue)")
 import CoreML
 
 // Function to load Core ML model
