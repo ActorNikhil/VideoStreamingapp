@@ -1,4 +1,6 @@
+If you're an iOS developer and you're asked why you want to work for Sonos, consider tailoring your response to highlight aspects that align with your skills, interests, and the company's mission. Here's a sample response:
 
+"I'm eager to join Sonos as an iOS developer because of the company's reputation for pioneering advancements in audio technology. Sonos has created a seamless ecosystem that seamlessly integrates with iOS devices, providing users with unparalleled audio experiences. As someone passionate about creating innovative and user-centric applications, I am excited about the opportunity to contribute to Sonos' commitment to delivering cutting-edge solutions that redefine how people interact with and enjoy music. The prospect of working in a collaborative and forward-thinking environment, alongside a team that prioritizes both technical excellence and user satisfaction, makes Sonos an ideal fit for my skills and aspirations as an iOS developer."
 import CoreML
 import Foundation
 
