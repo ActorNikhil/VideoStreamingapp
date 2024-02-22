@@ -1,4 +1,64 @@
+import SwiftUI
+import UIKit
 
+class SwiftUIPresentationAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    let isPresenting: Bool
+
+    init(isPresenting: Bool) {
+        self.isPresenting = isPresenting
+        super.init()
+    }
+
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        return 0.5
+    }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let fromVC = transitionContext.viewController(forKey: .from),
+              let toVC = transitionContext.viewController(forKey: .to) else {
+            return
+        }
+
+        let containerView = transitionContext.containerView
+
+        if isPresenting {
+            containerView.addSubview(toVC.view)
+            toVC.view.frame.origin.x = -toVC.view.frame.width
+
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                toVC.view.frame.origin.x = 0
+            }, completion: { _ in
+                transitionContext.completeTransition(true)
+            })
+        } else {
+            UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: {
+                fromVC.view.frame.origin.x = -fromVC.view.frame.width
+            }, completion: { _ in
+                transitionContext.completeTransition(true)
+            })
+        }
+    }
+}
+
+class YourUIViewController: UIViewController {
+    func presentSwiftUIView() {
+        let swiftUIView = UIHostingController(rootView: YourSwiftUIView())
+        swiftUIView.modalPresentationStyle = .overFullScreen
+        swiftUIView.transitioningDelegate = self
+
+        present(swiftUIView, animated: true, completion: nil)
+    }
+}
+
+extension YourUIViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SwiftUIPresentationAnimator(isPresenting: true)
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SwiftUIPresentationAnimator(isPresenting: false)
+    }
+}
 
 
 import pandas as pd
