@@ -1,3 +1,68 @@
+
+
+import UIKit
+import SwiftUI
+
+class BaseViewController: UIViewController {
+    private var hostingController: UIHostingController<YourSwiftUIView>?
+    private var uikitViewController: YourUIKitViewController?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Your base view controller setup
+        setupUI()
+    }
+
+    private func setupUI() {
+        let toggleButton = UIButton(type: .system)
+        toggleButton.setTitle("Toggle View", for: .normal)
+        toggleButton.addTarget(self, action: #selector(toggleView), for: .touchUpInside)
+
+        // Add other UI elements and layout constraints as needed
+
+        view.addSubview(toggleButton)
+
+        // Add other subviews to your base view controller
+    }
+
+    @objc private func toggleView() {
+        if hostingController == nil {
+            // Present SwiftUI view
+            let swiftUIView = YourSwiftUIView()
+            hostingController = UIHostingController(rootView: swiftUIView)
+            addChild(hostingController!)
+            view.addSubview(hostingController!.view)
+            hostingController!.didMove(toParent: self)
+        } else {
+            // Remove SwiftUI view
+            hostingController?.willMove(toParent: nil)
+            hostingController?.view.removeFromSuperview()
+            hostingController?.removeFromParent()
+            hostingController = nil
+        }
+
+        // Alternatively, you can use the same approach for the UIKit view controller
+    }
+}
+
+struct YourSwiftUIView: View {
+    var body: some View {
+        Text("This is a SwiftUI View")
+            .padding()
+    }
+}
+
+class YourUIKitViewController: UIViewController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Your UIKit view controller setup
+    }
+}
+
+
+
 import SwiftUI
 import UIKit
 
