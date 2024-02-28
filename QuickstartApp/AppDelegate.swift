@@ -1,5 +1,43 @@
 
+import SwiftUI
 
+struct ContentView: View {
+    @State private var viewAppeared = false
+    @Environment(\.presentationMode) private var presentationMode
+
+    var body: some View {
+        Text("Hello, SwiftUI!")
+            .onAppear {
+                if !viewAppeared {
+                    handleOnAppear()
+                    viewAppeared = true
+                }
+            }
+    }
+
+    func handleOnAppear() {
+        print("View appeared!")
+
+        // Add your custom logic here
+
+        // If this view is presented in a navigation stack, check if it's being popped
+        if presentationMode.wrappedValue.isBeingDismissed {
+            print("View is being dismissed")
+            // Add logic for when the view is being popped
+        }
+    }
+}
+
+@main
+struct YourApp: App {
+    var body: some Scene {
+        WindowGroup {
+            NavigationView {
+                ContentView()
+            }
+        }
+    }
+}
 import UIKit
 import SwiftUI
 
