@@ -1,5 +1,16 @@
 
 
+// Create an array of your custom struct from your training data
+let spikeData: [SpikeModel] = [
+    SpikeModel(crabs: "SomeCrabValue1", time: "SomeTimeValue1"),
+    SpikeModel(crabs: "SomeCrabValue2", time: "SomeTimeValue2"),
+    // Add more data...
+]
+
+// Convert your custom struct array to an MLDataTable
+let data = try! MLDataTable(trainingData: spikeData)
+
+
 Predictive Glucose Trend Analysis with Libre3 Continuous Glucose Monitoring App
 1. Introduction
 The Libre3 Continuous Glucose Monitoring (CGM) app offers an advanced feature for predicting glucose trends over the next 2 hours. This predictive capability empowers users to proactively manage their blood sugar levels, providing valuable insights into potential fluctuations. This document aims to elucidate the methodology behind predicting glucose trends and the benefits it brings to Libre3 CGM app users.
