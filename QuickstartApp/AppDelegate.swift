@@ -1,5 +1,29 @@
 
 
+/ Define your input data type (replace with your actual struct or class)
+struct YourInputDataType {
+    var crabs: String
+    var time: String
+}
+
+// Load the trained model
+guard let model = try? YourModelClass(configuration: MLModelConfiguration()) else {
+    fatalError("Model loading failed")
+}
+
+// Prepare input features (replace with your actual feature values)
+let inputFeatures = YourInputDataType(crabs: "SomeCrabValue", time: "SomeTimeValue")
+
+// Make a prediction
+if let prediction = try? model.prediction(
+    crabs: inputFeatures.crabs,
+    time: inputFeatures.time
+) {
+    print("Predicted label: \(prediction.label)")
+} else {
+    print("Prediction failed")
+}
+
 // Create an array of your custom struct from your training data
 let spikeData: [SpikeModel] = [
     SpikeModel(crabs: "SomeCrabValue1", time: "SomeTimeValue1"),
