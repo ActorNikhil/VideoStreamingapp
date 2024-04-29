@@ -1,4 +1,15 @@
+import Foundation
 
+func printCurrentDateWithMilliseconds() {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+    let currentDateTime = Date()
+    let formattedDate = dateFormatter.string(from: currentDateTime)
+    print("Current date with milliseconds: \(formattedDate)")
+}
+
+// Call the function to print the current date with milliseconds
+printCurrentDateWithMilliseconds()
 Integrating iOS Core ML models into an app involves rigorous testing and quality assurance (QA) to ensure that the models perform as expected and meet the app's requirements. Here's a brief overview of the testing and QA process for Core ML integration:
 
 1. **Unit Testing:** Write unit tests to verify the functionality of individual components of the app, including the Core ML model integration code. Unit tests should cover various input scenarios and expected outputs.
