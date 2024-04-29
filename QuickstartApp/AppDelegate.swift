@@ -1,5 +1,40 @@
 import Foundation
 
+import CoreBluetooth
+
+class BluetoothManager: NSObject, CBCentralManagerDelegate {
+    var centralManager: CBCentralManager!
+    
+    override init() {
+        super.init()
+        centralManager = CBCentralManager(delegate: self, queue: nil)
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        if central.state == .poweredOn {
+            // Define scan options
+            let scanOptions: [String: Any] = [
+                CBCentralManagerScanOptionAllowDuplicatesKey: true, // Allow duplicate peripheral discoveries
+                CBCentralManagerScanOptionSolicitedServiceUUIDsKey: [CBUUID(string: "180D")], // Specify service UUIDs to scan for
+                CBCentralManagerScanOptionIsConnectable: true // Scan only connectable peripherals
+                // Add other options as needed
+            ]
+            
+            // Scan for peripherals with all options
+            centralManager.scanForPeripherals(withServices: nil, options: scanOptions)
+        } else {
+            print("Bluetooth is not available.")
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
+        print("Discovered device: \(peripheral.name ?? "Unknown") with RSSI: \(RSSI)")
+    }
+}
+
+// Create an instance of BluetoothManager to start scanning
+let bluetoothManager = BluetoothManager()
+
 func printCurrentDateWithMilliseconds() {
     let dateFormatter = DateFormatter()
     dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
