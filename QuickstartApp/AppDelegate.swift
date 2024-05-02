@@ -2,6 +2,46 @@ import Foundation
 
 import CoreBluetooth
 
+import CoreBluetooth
+
+class YourCentralManagerDelegate: NSObject, CBCentralManagerDelegate {
+    
+    var centralManager: CBCentralManager!
+    
+    override init() {
+        super.init()
+        
+        // Initialize your central manager with a restoration identifier
+        let restorationIdentifier = "com.yourapp.centralManager1"
+        centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerOptionRestoreIdentifierKey: restorationIdentifier])
+    }
+    
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        // Handle central manager state changes
+    }
+    
+    func centralManager(_ central: CBCentralManager, willRestoreState dict: [String : Any]) {
+        // This method is called when state restoration is needed
+        
+        // Retrieve the restoration identifier
+        if let restorationIdentifier = dict[CBCentralManagerRestoredStateIdentifierKey] as? String {
+            // Check if the restoration identifier matches the one for this central manager instance
+            if restorationIdentifier == "com.yourapp.centralManager1" {
+                // Restore state for this central manager instance
+                print("Restoring state for central manager 1")
+            }
+        }
+    }
+    
+    func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        // Handle peripheral connection
+    }
+    
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        // Handle peripheral disconnection
+    }
+}
+
 class BluetoothManager: NSObject, CBCentralManagerDelegate {
     var centralManager: CBCentralManager!
     
