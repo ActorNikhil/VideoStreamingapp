@@ -5,6 +5,10 @@
 //  Created by Nikhil Challagulla on 10/20/17.
 //
 
+"This document explains how our app connects to sensors via Bluetooth, ensuring they communicate effectively. It covers how they pair up, share data, and stay secure throughout the process."
+
+
+
 import UIKit
 
 class ViewController: UIViewController,UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
