@@ -1,3 +1,98 @@
+
+//
+//  DropdownView.swift
+//  Libre3
+//
+//  Created by Wei Zhang on 9/8/22.
+//  Copyright © 2022 Abbott Laboratories. All rights reserved.
+//
+
+import SwiftUI
+
+protocol DropdownSelectable: CaseIterable, Identifiable, CustomStringConvertible, Equatable {
+    
+    associatedtype Dropdown
+    
+    static var dropdownList: [Dropdown] { get }
+}
+
+final class DropdownViewModel<Dropdown: DropdownSelectable>: ObservableObject {
+    
+    @Published var selectedDropdown: Dropdown
+    
+    let dropdownList: [Dropdown]
+    
+    // swiftlint:disable force_cast
+    init(selectedDropdown: Dropdown) {
+        self.selectedDropdown = selectedDropdown
+        self.dropdownList = Dropdown.dropdownList as! [Dropdown]
+    }
+    // swiftlint:enable force_cast
+}
+
+struct DropdownView<Dropdown: DropdownSelectable>: View {
+    
+    @ObservedObject var viewModel: DropdownViewModel<Dropdown>
+    
+    @State private var isExpanded = false
+    
+    var body: some View {
+        DisclosureGroup(isExpanded: $isExpanded) {
+            HStack {
+                VStack(alignment: .leading, spacing: 0) {
+                    ForEach(viewModel.dropdownList) { dropdown in
+                        Button(dropdown.description) {
+                            viewModel.selectedDropdown = dropdown
+                            
+                            withAnimation {
+                                isExpanded.toggle()
+                            }
+                        }
+                        .padding(.top, 10)
+                    }
+                }
+                
+                Spacer()
+            }
+        } label: {
+            HStack {
+                Text(viewModel.selectedDropdown.description)
+                    .accentColor(Color.primary)
+                
+                Image("Dropdown")
+                    .resizable()
+                    .frame(width: 10, height: 5)
+            }
+            .onTapGesture {
+                withAnimation {
+                    isExpanded.toggle()
+                }
+            }
+        }
+        .accessibilityIdentifier(Accessibility.ID.Logbook.addNoteDropDown)
+        .font(ApplicationSemiBoldFont_Size_18)
+        .buttonStyle(PlainButtonStyle()) // need this to show each dropdown item
+        .accentColor(.clear) // need this to hide chevron
+        .onChange(of: isExpanded) { _ in
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+    }
+}
+
+#if DEBUG
+struct DropdownView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack {
+            DropdownView<FoodType>(viewModel: DropdownViewModel<FoodType>(selectedDropdown: .unknown))
+            
+            DropdownView<ExerciseType>(viewModel: DropdownViewModel<ExerciseType>(selectedDropdown: .unknown))
+        }
+    }
+}
+#endif
+
+
+
 import Foundation
 
 import CoreBluetooth
