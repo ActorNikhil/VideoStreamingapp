@@ -1,4 +1,33 @@
+import SwiftUI
 
+struct MainViewControllerWrapper: UIViewControllerRepresentable {
+    var onButtonTap: (() -> Void)?
+    
+    func makeUIViewController(context: Context) -> MainViewController {
+        let viewController = MainViewController()
+        context.coordinator.mainViewController = viewController
+        return viewController
+    }
+
+    func updateUIViewController(_ uiViewController: MainViewController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(onButtonTap: onButtonTap)
+    }
+
+    class Coordinator: NSObject {
+        var mainViewController: MainViewController?
+        var onButtonTap: (() -> Void)?
+        
+        init(onButtonTap: (() -> Void)?) {
+            self.onButtonTap = onButtonTap
+        }
+        
+        @objc func buttonTapped() {
+            mainViewController?.someFunction()
+        }
+    }
+}
 //
 //  DropdownView.swift
 //  Libre3
