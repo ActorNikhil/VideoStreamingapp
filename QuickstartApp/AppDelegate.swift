@@ -1,5 +1,22 @@
 import SwiftUI
 
+import UIKit
+
+func findViewController<T: UIViewController>(rootViewController: UIViewController, ofType type: T.Type) -> T? {
+    if let viewController = rootViewController as? T {
+        return viewController
+    }
+    for child in rootViewController.children {
+        if let found = findViewController(rootViewController: child, ofType: type) {
+            return found
+        }
+    }
+    if let presented = rootViewController.presentedViewController {
+        return findViewController(rootViewController: presented, ofType: type)
+    }
+    return nil
+}
+
 struct MainViewControllerWrapper: UIViewControllerRepresentable {
     var onButtonTap: (() -> Void)?
     
