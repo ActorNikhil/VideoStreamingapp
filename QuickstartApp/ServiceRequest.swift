@@ -1,3 +1,46 @@
+
+#!/bin/bash
+
+# Ensure the script is run with a target name
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 <target>"
+    echo "Available targets: A, B, C"
+    exit 1
+fi
+
+# Assign the target from the argument
+TARGET=$1
+PROJECT_PATH="path/to/your/project.xcodeproj"
+
+# Validate the target
+if [[ "$TARGET" != "A" && "$TARGET" != "B" && "$TARGET" != "C" ]]; then
+    echo "Error: Invalid target. Available targets: A, B, C."
+    exit 1
+fi
+
+# Define the scheme corresponding to the target
+SCHEME="${TARGET}Scheme"
+
+# Switch to the specified scheme
+echo "Switching to scheme '$SCHEME' for target '$TARGET'..."
+
+# Use xcodebuild to check the scheme
+if ! xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -showBuildSettings >/dev/null 2>&1; then
+    echo "Error: Scheme '$SCHEME' not found in project."
+    exit 1
+fi
+
+# Optionally, you can set the scheme in Xcode project settings
+# Here, we'll simply build with the specified scheme to confirm it's working
+xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -configuration Debug clean build
+
+if [ $? -eq 0 ]; then
+    echo "Successfully switched to scheme '$SCHEME' for target '$TARGET'."
+else
+    echo "Failed to switch to scheme '$SCHEME'."
+    exit 1
+fi
+
 //
 //  ServiceRequest.swift
 //  SampleVideo
