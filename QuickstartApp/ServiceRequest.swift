@@ -3,6 +3,33 @@
 
 # Configuration
 TARGET_NAME="YourTargetName"
+COUNTRY_CODE=$1  # Pass the country code as an argument to the script
+PLIST_PATH="./${TARGET_NAME}/Info.plist"  # Path to your Info.plist
+BUILD_NUMBER=$(($(xcodebuild -target "$TARGET_NAME" -showBuildSettings | grep CURRENT_PROJECT_VERSION | awk '{print $3}') + 1))
+
+# Base Bundle ID
+BASE_BUNDLE_ID="com.app"  # Replace with your base Bundle ID
+
+# Construct the new Bundle ID
+NEW_BUNDLE_ID="${BASE_BUNDLE_ID}.${COUNTRY_CODE}"
+
+# Update Info.plist with new Bundle ID
+/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier ${NEW_BUNDLE_ID}" "$PLIST_PATH"
+
+# Update build number
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$PLIST_PATH"
+
+echo "Bundle ID updated to ${NEW_BUNDLE_ID}."
+echo "Build number updated to ${BUILD_NUMBER}."
+
+# Optional: Build the project
+xcodebuild -target "$TARGET_NAME"
+
+
+#!/bin/bash
+
+# Configuration
+TARGET_NAME="YourTargetName"
 COUNTRY_CODE="US"  # Change to the desired country code
 PLIST_PATH="./${TARGET_NAME}/Info.plist"  # Path to your Info.plist
 BUILD_NUMBER=$(($(xcodebuild -target "$TARGET_NAME" -showBuildSettings | grep CURRENT_PROJECT_VERSION | awk '{print $3}') + 1))
