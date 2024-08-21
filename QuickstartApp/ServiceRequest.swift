@@ -1,3 +1,25 @@
+
+#!/bin/bash
+
+# Configuration
+TARGET_NAME="YourTargetName"
+COUNTRY_CODE="US"  # Change to the desired country code
+PLIST_PATH="./${TARGET_NAME}/Info.plist"  # Path to your Info.plist
+BUILD_NUMBER=$(($(xcodebuild -target "$TARGET_NAME" -showBuildSettings | grep CURRENT_PROJECT_VERSION | awk '{print $3}') + 1))
+
+# Update Info.plist with new country code
+/usr/libexec/PlistBuddy -c "Set :COUNTRY_CODE ${COUNTRY_CODE}" "$PLIST_PATH"
+
+# Update build number
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${BUILD_NUMBER}" "$PLIST_PATH"
+
+echo "Country code updated to ${COUNTRY_CODE}."
+echo "Build number updated to ${BUILD_NUMBER}."
+
+# Optional: Build the project
+xcodebuild -target "$TARGET_NAME"
+
+
 #!/bin/bash
 
 # Ensure the script is run with a target name
