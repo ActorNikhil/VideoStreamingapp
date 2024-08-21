@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Ensure the script is run with a target name
@@ -21,12 +20,13 @@ fi
 # Define the scheme corresponding to the target
 SCHEME="${TARGET}Scheme"
 
-# Switch to the specified scheme
-echo "Switching to scheme '$SCHEME' for target '$TARGET'..."
+# Print out the scheme for debugging
+echo "Using scheme '$SCHEME' for target '$TARGET'..."
 
-# Use xcodebuild to check the scheme
+# Check if the scheme exists
 if ! xcodebuild -project "$PROJECT_PATH" -scheme "$SCHEME" -showBuildSettings >/dev/null 2>&1; then
     echo "Error: Scheme '$SCHEME' not found in project."
+    echo "Please verify that the scheme '$SCHEME' exists in your Xcode project."
     exit 1
 fi
 
@@ -40,7 +40,6 @@ else
     echo "Failed to switch to scheme '$SCHEME'."
     exit 1
 fi
-
 //
 //  ServiceRequest.swift
 //  SampleVideo
