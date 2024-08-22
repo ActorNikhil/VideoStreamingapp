@@ -1,4 +1,22 @@
+#!/bin/bash
 
+# Path to your JSON configuration file
+CONFIG_FILE="$PROJECT_DIR/config/bundle_identifiers.json"
+
+# Country/Environment should be passed as an environment variable
+COUNTRY=${COUNTRY:-"US"}
+
+# Extract the bundle identifier for the given country from the JSON file
+BUNDLE_IDENTIFIER=$(python3 -c "
+import sys, json
+config = json.load(open('$CONFIG_FILE'))
+print(config.get('$COUNTRY', 'com.yourcompany.yourapp.default'))
+")
+
+# Update the Info.plist with the parsed bundle identifier
+/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $BUNDLE_IDENTIFIER" "${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"
+
+echo "Set bundle identifier to $BUNDLE_IDENTIFIER for $COUNTRY"
 #!/bin/bash
 
 # Configuration
