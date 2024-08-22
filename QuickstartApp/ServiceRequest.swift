@@ -1,5 +1,37 @@
 #!/bin/bash
 
+# Check if the correct number of arguments are passed
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <COUNTRY>"
+    exit 1
+fi
+
+# Assign the first argument to the COUNTRY variable
+COUNTRY=$1
+
+# Path to your JSON configuration file
+CONFIG_FILE="config/bundle_identifiers.json"
+
+# Extract the bundle identifier for the given country from the JSON file
+BUNDLE_IDENTIFIER=$(python3 -c "
+import sys, json
+config = json.load(open('$CONFIG_FILE'))
+print(config.get('$COUNTRY', 'com.yourcompany.yourapp.default'))
+")
+
+# Check if the BUNDLE_IDENTIFIER was found
+if [ "$BUNDLE_IDENTIFIER" == "com.yourcompany.yourapp.default" ]; then
+    echo "Error: No bundle identifier found for country '$COUNTRY'"
+    exit 1
+fi
+
+# Update the Info.plist with the parsed bundle identifier
+/usr/libexec/PlistBuddy -c "Set :CFBundleIdentifier $BUNDLE_IDENTIFIER" "${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"
+
+echo "Bundle identifier updated to $BUNDLE_IDENTIFIER for $COUNTRY"
+
+#!/bin/bash
+
 # Path to your JSON configuration file
 CONFIG_FILE="$PROJECT_DIR/config/bundle_identifiers.json"
 
